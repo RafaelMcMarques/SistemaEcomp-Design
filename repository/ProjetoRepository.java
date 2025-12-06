@@ -8,17 +8,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.Projeto;
-import model.Cliente;
-import model.Etapa;
+import model.*;
+import model.Desenvolvedor;
 
 public class ProjetoRepository extends ObjectRepository<Projeto> {
 
     private EtapaRepository etapaRepository;
+    private EcomperRepository ecomperRepository;
     
     public ProjetoRepository(String path) {
         super(path);
         this.etapaRepository = new EtapaRepository("data/etapa.csv");
+        this.ecomperRepository = new EcomperRepository("data/ecomper.csv");
     }
 
 
@@ -144,6 +145,20 @@ public class ProjetoRepository extends ObjectRepository<Projeto> {
         p.setCaminhosContrato(parts[7]); 
 
       }
+
+      List<Desenvolvedor> devs = new ArrayList<>();
+      if (!parts[8].isEmpty()) {
+          String[] devTokens = parts[8].split(",");
+          for (String t : devTokens) {
+              try {
+                  int devId = Integer.parseInt(t.trim());
+                  Ecomper ecomper = ecomperRepository.getById(devId); 
+                  Desenvolvedor dev = Desenvolvedor.fromSuper(ecomper);
+                  devs.add(dev);
+              } catch (NumberFormatException ignored) {}
+          }
+      }
+      p.setDesenvolvedores(devs);
       
       return p;
    }
@@ -172,7 +187,23 @@ public class ProjetoRepository extends ObjectRepository<Projeto> {
       .append(p.getDataPrazo() != null ? p.getDataPrazo() : "").append(";")
       .append(p.getDescricao() != null ? p.getDescricao() : "").append(";")
       .append(p.getNomeContrato() != null ? p.getNomeContrato() : "").append(";")
-      .append(p.getCaminhosContrato() != null ? p.getCaminhosContrato() : "");
+      .append(p.getCaminhosContrato() != null ? p.getCaminhosContrato() : "").append(";");
+
+      String devsStr = "sem devs";
+      List<Desenvolvedor> devs = p.getDesenvolvedores();
+      if (devs != null && !devs.isEmpty()) {
+        devsStr = "";
+          for (int i = 0; i < devs.size(); i++) {
+              devsStr += devs.get(i).getId();
+              if (i < devs.size() - 1) {
+                  devsStr += ",";
+              }
+          }
+      }
+
+      sb.append(devsStr);
+
+
 
       return sb.toString();
     }

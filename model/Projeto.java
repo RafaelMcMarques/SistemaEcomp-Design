@@ -9,6 +9,7 @@ public class Projeto {
 
     private Cliente cliente;
     private List<Etapa> etapas;
+    private List<Desenvolvedor> desenvolvedores;
     private String dataInicio;
     private String dataPrazo;
     private String descricao;
@@ -40,6 +41,14 @@ public class Projeto {
 
     public String getDataInicio() {
         return dataInicio;
+    }
+
+    public List<Desenvolvedor> getDesenvolvedores() {
+        return desenvolvedores;
+    }
+
+    public void setDesenvolvedores(List<Desenvolvedor> desenvolvedores) {
+        this.desenvolvedores = desenvolvedores;
     }
 
     public void setDataInicio(String dataInicio) {
@@ -133,6 +142,10 @@ public class Projeto {
       this.etapas.add(e);
     }
 
+    public void addDesenvolvedor(Desenvolvedor d) {
+        this.desenvolvedores.add(d);
+    }
+
 
     @Override
     public String toString() {
@@ -161,10 +174,22 @@ public class Projeto {
         if (etapas != null && !etapas.isEmpty()) {
             sb.append("Etapas: \n");
             for (Etapa e : etapas) {
-                sb.append("  Cronograma: ").append(e.getCronograma()).append("\n");
-                sb.append("  Status: ").append(e.getStatus()).append("\n");
-                sb.append("\n");
+                sb.append("  Cronograma: ").append(e.getCronograma()).append(" | ");
+                sb.append("Status: ").append(e.getStatus()).append("\n");
             }
+        } else {
+            sb.append("Etapas: (vazio)\n");
+        }
+
+        if (desenvolvedores != null && !desenvolvedores.isEmpty()) {
+            sb.append("Desenvolvedores: \n");
+            for (Desenvolvedor d : desenvolvedores) {
+                sb.append("  Nome: ").append(d.getNome()).append(" | ");
+                sb.append("Cargo: ").append(d.getCargo()).append("\n");
+            }
+
+        } else {
+            sb.append("Desenvolvedores: (vazio)\n");
         }
 
         return sb.toString();

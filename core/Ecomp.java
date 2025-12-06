@@ -5,12 +5,16 @@ import repository.*;
 
 import java.util.List;
 
+import javax.management.Descriptor;
+
 public class Ecomp {
 
   ProjetoRepository projetoRepository;
+  EcomperRepository ecomperRepository;
 
   public Ecomp() {
     projetoRepository = new ProjetoRepository("data/projeto.csv");
+    ecomperRepository = new EcomperRepository("data/ecomper.csv");
   }
 
 
@@ -66,7 +70,7 @@ public class Ecomp {
       p.setCaminhosContrato(caminho);
 
       projetoRepository.update(p);
-      return "contratos/" + "id/" + nome + ".pdf";
+      return "contratos/" + id + "/" + nome + ".pdf";
 
     } catch (Exception e) {
       throw e; 
@@ -112,6 +116,77 @@ public class Ecomp {
     } catch (Exception e) {
       throw e;
     }
+  }
+
+  public int cadastrarMembro(String nome, String email, String cpf, String cargo) {
+    Ecomper ecomper = new Ecomper();
+
+    try {
+      ecomper.setNome(nome); 
+      ecomper.setCargo(cargo);
+      ecomper.setCpf(cpf);
+      ecomper.setEmail(email);
+
+      ecomper = ecomperRepository.insertNew(ecomper);
+      return ecomper.getId();
+    } catch (Exception e) {
+      throw e;
+    }
+
+  }
+
+  public String getListaEcompersStr() {
+    List<Ecomper> lista = ecomperRepository.getAll();
+
+    if (lista == null || lista.isEmpty()) 
+      return "Nenhum ecomper cadastrado!";
+
+    StringBuilder sb = new StringBuilder();
+
+    for (Ecomper e : lista) {
+        sb.append(e.toString()).append("\n");
+    }
+
+    return sb.toString();
+  }
+
+  public String getDesenvolvedoresParaSelecao(int projId) {
+    Projeto p = projetoRepository.getById(projId);
+    List<Ecomper> ecompers = ecomperRepository.getAll();
+
+
+    StringBuilder sb = new StringBuilder();
+    for (Ecomper e: ecompers) {
+
+      boolean jaTem = false;
+      for (Ecomper devDoProj : p.getDesenvolvedores()) {
+        if (devDoProj.getId() == e.getId())
+          jaTem = true;
+      }
+      if (jaTem) continue;
+       
+      sb.append("Ecomper ")
+      .append(e.getId()).append(" -> ")
+      .append("Nome: \"").append(e.getNome()).append("\"");
+      sb.append("| Cargo: \"").append(e.getCargo()).append("\"");
+      sb.append("\n");
+    }
+
+    if (sb.toString() == "" || sb.toString().isBlank() || sb.toString().isEmpty()) {
+      return "Nenhum ecomper disponivel!";
+    }
+
+    return sb.toString();
+  }
+
+  public void vincularDesenvolvedorProjeto(int projId, int devId) {
+    System.out.println(projId + " contem " + devId);
+    Desenvolvedor dev = Desenvolvedor.fromSuper(ecomperRepository.getById(devId));
+
+    Projeto p = projetoRepository.getById(projId);
+    p.addDesenvolvedor(dev); 
+
+    projetoRepository.update(p);
   }
 
 }
