@@ -53,7 +53,7 @@ public class Projeto {
 
     public void setDataInicio(String dataInicio) {
         if (dataInicio == null || dataInicio.isBlank()) {
-            throw new IllegalArgumentException("Data de inicio não pode ser vazia.");
+            throw new IllegalArgumentException("Data de início não pode ser vazia.");
         }
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -61,7 +61,7 @@ public class Projeto {
         try {
             LocalDate.parse(dataInicio, fmt);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Data do prazo inválida. Use o formato dd/MM/yyyy.");
+            throw new IllegalArgumentException("Data do início inválida. Use o formato dd/MM/yyyy.");
         }
         this.dataInicio = dataInicio;
     }
@@ -151,9 +151,9 @@ public class Projeto {
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("=== Projeto ").append(id >= 0 ? id : "(sem ID)").append(" ===\n\n");
+        sb.append("-- Projeto ").append(id >= 0 ? id : "(sem ID)").append("-- \n\n");
 
-        sb.append("Nome Cliente:")
+        sb.append("Nome do cliente: ")
         .append(cliente != null ? cliente.getNome() : "(Sem cliente)").append("\n");
 
         sb.append("Descrição: ")

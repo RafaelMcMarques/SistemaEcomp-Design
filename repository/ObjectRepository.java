@@ -42,6 +42,8 @@ public abstract class ObjectRepository<T> {
         return maior + 1;
     }
 
+    protected abstract void saveAll(List<T> list);
+
     // Retorna todos os objetos do arquivo
     public abstract List<T> getAll();
 

@@ -9,8 +9,8 @@ import javax.management.Descriptor;
 
 public class Ecomp {
 
-  ProjetoRepository projetoRepository;
-  EcomperRepository ecomperRepository;
+  private ProjetoRepository projetoRepository;
+  private EcomperRepository ecomperRepository;
 
   public Ecomp() {
     projetoRepository = new ProjetoRepository("data/projeto.csv");
@@ -45,17 +45,16 @@ public class Ecomp {
 
   }
 
-  public String getListaProjetosStr() {
+  public String getRelatorioProjetos() {
     List<Projeto> projetos = projetoRepository.getAll();
-
     StringBuilder sb = new StringBuilder();
 
     if (projetos.isEmpty()) {
-      return "Nenhum projeto cadastrado!";
+      return "Nenhum projeto cadastrado!\n\n";
     }
     for (Projeto p : projetos) {
         sb.append(p.toString());
-        sb.append("\n"); 
+        sb.append("\n");
     }
 
     return sb.toString(); 
@@ -82,7 +81,7 @@ public class Ecomp {
     List<Projeto> projetos = projetoRepository.getAll();
 
     if (projetos.isEmpty()) {
-      return "Nenhum projeto cadastrado!";
+      return "Nenhum projeto cadastrado!\n";
     }
 
     StringBuilder sb = new StringBuilder();
@@ -90,7 +89,7 @@ public class Ecomp {
       sb.append("Projeto ")
       .append(p.getId()).append(" -> ")
       .append("Descrição: \"").append(p.getDescricao()).append("\"");
-      sb.append("| Cliente: \"").append(p.getCliente().getNome()).append("\"");
+      sb.append(" | Cliente: \"").append(p.getCliente().getNome()).append("\"");
       sb.append("\n");
     }
 
@@ -139,7 +138,7 @@ public class Ecomp {
     List<Ecomper> lista = ecomperRepository.getAll();
 
     if (lista == null || lista.isEmpty()) 
-      return "Nenhum ecomper cadastrado!";
+      return "Nenhum ecomper cadastrado!\n\n";
 
     StringBuilder sb = new StringBuilder();
 
@@ -173,7 +172,7 @@ public class Ecomp {
     }
 
     if (sb.toString() == "" || sb.toString().isBlank() || sb.toString().isEmpty()) {
-      return "Nenhum ecomper disponivel!";
+      return "Nenhum ecomper disponivel!\n";
     }
 
     return sb.toString();
@@ -188,6 +187,7 @@ public class Ecomp {
 
     projetoRepository.update(p);
   }
+
 
 }
 

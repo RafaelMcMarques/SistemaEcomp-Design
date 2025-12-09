@@ -2,7 +2,6 @@ package repository;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class EcomperRepository extends ObjectRepository<Ecomper> {
     public Ecomper insertNew(Ecomper obj) {
         List<Ecomper> lista = getAll();
 
-        int novoId = gerarNovoId();
+        int novoId = getNextId();
         obj.setId(novoId);
 
         lista.add(obj);
@@ -76,33 +75,9 @@ public class EcomperRepository extends ObjectRepository<Ecomper> {
         return obj;
     }
 
-    // Usa o primeiro campo do CSV para encontrar maior ID
-    private int gerarNovoId() {
-        int maior = -1;
-
-        File file = new File(path);
-        if (!file.exists()) return 1;
-
-        try (BufferedReader br = new BufferedReader(new FileReader(path))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                if (line.isBlank()) continue;
-
-                String[] partes = line.split(";");
-                int id = Integer.parseInt(partes[0]);
-
-                if (id > maior) maior = id;
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-        return maior + 1;
-    }
 
     // Salva toda a lista no arquivo
-    private void saveAll(List<Ecomper> lista) {
+    protected void saveAll(List<Ecomper> lista) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, false))) {
             for (Ecomper e : lista) {
                 bw.write(objectToCSV(e));

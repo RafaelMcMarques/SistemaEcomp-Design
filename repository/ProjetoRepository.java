@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.*;
-import model.Desenvolvedor;
 
 public class ProjetoRepository extends ObjectRepository<Projeto> {
 
@@ -92,7 +91,7 @@ public class ProjetoRepository extends ObjectRepository<Projeto> {
         saveAll(novos);
     }
 
-    private void saveAll(List<Projeto> lista) {
+    protected void saveAll(List<Projeto> lista) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, false))) {
             for (Projeto p : lista) {
                 bw.write(objectToCSV(p));

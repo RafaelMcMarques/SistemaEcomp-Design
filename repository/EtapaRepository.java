@@ -73,7 +73,7 @@ public class EtapaRepository extends ObjectRepository<Etapa> {
         insertNew(obj);
     }
 
-    private void saveAll(List<Etapa> lista) {
+    protected void saveAll(List<Etapa> lista) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(path, false))) {
             for (Etapa e : lista) {
                 bw.write(objectToCSV(e));

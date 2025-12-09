@@ -69,7 +69,7 @@ public class Ecomper {
 
     @Override
     public String toString() {
-        return "=== Ecomper " + id + " ===\n" +
+        return "-- Ecomper " + id + " --\n" +
               "Nome: " + nome + "\n" +
               "CPF: " + cpf + "\n" +
               "Cargo: " + cargo + "\n" +

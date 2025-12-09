@@ -13,15 +13,16 @@ public class Main {
   }
 
   public static void telaPrincipal() {
-    System.out.println("\n\n==== SISTEMA ECOMP MENU ====\n");
+    System.out.println("\n\n==== MENU SISTEMA ECOMP ====\n");
     System.out.println("1 - para exibir relatorio de projetos");
     System.out.println("2 - para cadastrar projeto");
     System.out.println("3 - para mostrar projetos para seleção");
     System.out.println("4 - para listar ecompers");
     System.out.println("5 - para cadastrar ecomper");
 
-    System.out.println("-1 para sair\n");
+    System.out.println("0 - para sair");
 
+    System.out.print("\nDigite uma opção: ");
     int op = Integer.parseInt(sc.nextLine());
 
 
@@ -41,7 +42,7 @@ public class Main {
       case 5:
         iniciarCadastroMembro();
         return;
-      case -1:
+      case 0:
         return;
       default:
         return;
@@ -50,9 +51,9 @@ public class Main {
 
 
   public static void exibirRelatorioProjetos() {
-    System.out.println("RELATORIO DE PROJETOS:\n");
-    System.out.println(ecomp.getListaProjetosStr());
-    System.out.println("FIM DO RELATORIO DE PROJETOS\n");
+    System.out.println("\n\n== RELATORIO DE PROJETOS ==\n");
+    System.out.print(ecomp.getRelatorioProjetos());
+    System.out.println("== FIM DO RELATORIO DE PROJETOS ==\n");
 
     System.out.println("Digite qualquer tecla pra voltar ao menu");
     sc.nextLine();
@@ -78,7 +79,7 @@ public class Main {
     try {
       id = ecomp.cadastrarProjeto(descricao, dataInicio, dataPrazo, nomeCliente);
     } catch (Exception e) {
-      System.out.println("ERRO: " + e.getMessage());
+      System.out.println("\nERRO: " + e.getMessage());
       System.out.println("Tente novamente!");
       iniciarCadastroProjeto();
       return;
@@ -106,29 +107,29 @@ public class Main {
   }
 
   public static void iniciarCadastroProjeto() {
-    System.out.println("\n== Cadastrando novo projeto == ");
+    System.out.println("\n\n== Cadastrando novo projeto == \n");
     preencherProjeto();
     return;
   }
 
   public static void associarContrato(int id) {
-    System.out.println("\n== Associando contrato ao projeto " + id + "==\n");
+    System.out.println("\n== Associando contrato ao projeto " + id + " ==\n");
     System.out.print("Nome do contrato: ");
     String nome = sc.nextLine();
-    System.out.print("Caminhos do contrato: ");
+    System.out.print("Caminho do contrato: ");
     String caminho = sc.nextLine();
 
     String nomeArquivoPDF;
     try {
       nomeArquivoPDF = ecomp.associarContrato(id, nome, caminho);
     } catch (Exception e) {
-      System.out.println("ERRO: " + e.getMessage());
+      System.out.println("\nERRO: " + e.getMessage());
       System.out.println("Tente novamente!");
       associarContrato(id);
       return;
     }
     System.out.println("\nArquivo salvo com sucesso em: " + nomeArquivoPDF);
-    System.out.println("Projeto cadastrado!\n");
+    System.out.println("\n== Projeto cadastrado! ==\n");
 
     
     System.out.println("Digite qualquer tecla pra voltar ao menu");
@@ -143,7 +144,7 @@ public class Main {
     System.out.println("\n\n== Seleção de projeto ==\n");
     System.out.println(projs);
 
-    System.out.print("\nDigite o id do projeto (-1 para voltar ao menu): "); 
+    System.out.print("Digite o id do projeto (-1 para voltar ao menu): "); 
 
     int op = Integer.parseInt(sc.nextLine());
 
@@ -160,16 +161,16 @@ public class Main {
 
   public static void selecionarProjeto(int id) {
     if (!ecomp.projetoExiste(id)) {
-      System.out.println("ERRO: O projeto id " + id + "nao existe! Tente novamente");
+      System.out.println("\nERRO: O projeto id " + id + " não existe! Tente novamente");
       mostrarProjetosParaSelecao();
       return;
     }
 
-    System.out.println("== Projeto " + id + " selecionado ==");
+    System.out.println("\n\n== Projeto " + id + " selecionado ==\n");
 
     System.out.println("1 - para cadastrar etapa do projeto");
     System.out.println("2 - para adicionar desenvolvedor ao projeto");
-    System.out.println("-1 para voltar ao menu");
+    System.out.print("\nDigite uma opção (-1 para voltar ao menu): ");
 
     int op = Integer.parseInt(sc.nextLine());
 
@@ -189,9 +190,9 @@ public class Main {
   }
 
   public static void cadastrarEtapa(int id) {
-    System.out.println("== Cadastrando etapa ==");
+    System.out.println("\n\n== Cadastrando etapa ao projeto " + id +  " ==\n");
 
-    System.out.print("Cronagrama: ");
+    System.out.print("Cronograma: ");
     String cronograma = sc.nextLine();
     System.out.print("Status: ");
     String status = sc.nextLine();
@@ -199,13 +200,13 @@ public class Main {
     try {
       ecomp.cadastrarEtapaProjeto(id, cronograma, status);
     } catch (Exception e) {
-      System.out.println("ERRO: " + e.getMessage());
+      System.out.println("\nERRO: " + e.getMessage());
       System.out.println("Tente novamente!");
       cadastrarEtapa(id);
       return;
     }
 
-    System.out.println("Etapa adicionada com sucesso!\n");
+    System.out.println("\nEtapa adicionada com sucesso!\n");
 
     System.out.println("Digite qualquer tecla pra voltar ao menu");
     sc.nextLine();
@@ -214,7 +215,7 @@ public class Main {
   }
 
   public static void iniciarCadastroMembro() {
-    System.out.println("\n== Cadastrando membro ==");
+    System.out.println("\n\n== Cadastrando membro ==\n");
 
     preencherEcomper();
     return;
@@ -239,15 +240,15 @@ public class Main {
     try {
       id = ecomp.cadastrarMembro(nome, email, cpf, cargo);
     } catch (Exception e) {
-      System.out.println("ERRO: " + e.getMessage());
+      System.out.println("\nERRO: " + e.getMessage());
       System.out.println("Tente novamente!");
       iniciarCadastroMembro();
       return;
     }
 
-    System.out.println("Ecomper " + id + " cadastrado!");
+    System.out.println("\nEcomper " + id + " cadastrado!");
 
-    System.out.println("Digite qualquer tecla pra voltar ao menu");
+    System.out.println("\nDigite qualquer tecla pra voltar ao menu");
     sc.nextLine();
     telaPrincipal();
 
@@ -256,20 +257,19 @@ public class Main {
   public static void listarEcompers() {
     String ecompersStr = ecomp.getListaEcompersStr();
 
-    System.out.println("LISTA DE ECOMPERS: \n");
+    System.out.println("\n\n=== LISTA DE ECOMPERS === \n");
 
-    System.out.println(ecompersStr);
+    System.out.print(ecompersStr);
 
-    System.out.println("FIM DA LISTA DE ECOMPERS\n");
+    System.out.println("== FIM DA LISTA DE ECOMPERS ==\n");
 
     System.out.println("Digite qualquer tecla pra voltar ao menu");
     sc.nextLine();
     telaPrincipal();
-
   }
 
   public static void adicionarDesenvolvedor(int projId) {
-    System.out.println("== Vinculando desenvolvedor ao projeto ==");
+    System.out.println("\n\n== Vinculando desenvolvedor ao projeto ==\n");
 
     String devsList = ecomp.getDesenvolvedoresParaSelecao(projId);
     System.out.println(devsList);
@@ -284,11 +284,13 @@ public class Main {
     }
 
     ecomp.vincularDesenvolvedorProjeto(projId, devId);
-    System.out.println("Desenvolvedor vinculado com sucesso!");
+    System.out.println("\nDesenvolvedor vinculado com sucesso!\n");
 
     System.out.println("1 - para vincular outro desenvolvedor");
     System.out.println("2 - para voltar ao menu");
 
+
+    System.out.print("\nDigite uma opcao: ");
     int op = Integer.parseInt(sc.nextLine());
 
     switch (op) {
@@ -301,6 +303,7 @@ public class Main {
     }
 
   }
+
 }
 
 
